@@ -34,7 +34,7 @@ jobs:
 
       - name: Build binary packages from source (never fetch)
         run: |
-          emerge --oneshot --buildpkgonly --usepkg=n --jobs=2 \
+          emerge --oneshot --buildpkg --usepkg=n --jobs=2 \
             $(grep -v -E "^\s*#|^\s*$" packages.txt | tr '\n' ' ')
 
       - name: Generate Packages index
