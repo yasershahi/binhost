@@ -18,6 +18,9 @@ jobs:
       - name: Checkout repo (package list + portage configs)
         uses: actions/checkout@v4
 
+      - name: Sync portage tree (fresh stage3 ships without one)
+        run: emerge --sync -q
+
       - name: Select profile matching the laptop
         run: eselect profile set default/linux/amd64/23.0/desktop
 
@@ -28,9 +31,6 @@ jobs:
           cp -r portage/package.accept_keywords/. /etc/portage/package.accept_keywords/
           cp portage/package.license /etc/portage/package.license
           emerge --info | grep -E "USE=|VIDEO_CARDS=|LLVM_TARGETS=" | head -n 3
-
-      - name: Sync portage tree
-        run: emerge --sync -q
 
       - name: Build binary packages from source (never fetch)
         run: |
