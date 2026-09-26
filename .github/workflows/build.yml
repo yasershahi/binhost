@@ -39,8 +39,8 @@ jobs:
 
       - name: Generate Packages index
         run: |
-          emaint binhost "${PKGDIR:-/var/cache/binpkgs}"
-          ls "${PKGDIR:-/var/cache/binpkgs}" | head
+          emaint binhost
+          ls /var/cache/binpkgs | head
 
       - name: Publish to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
