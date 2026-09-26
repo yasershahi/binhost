@@ -1,0 +1,10 @@
+# Packages to prebuild on CI. One atom per line, # comments allowed.
+# Keep this SHORT at first to validate the pipeline, then add the monsters.
+app-misc/fastfetch
+sys-process/htop
+# --- monsters (uncomment after the first green run) ---
+# sys-devel/gcc
+# llvm-core/llvm
+# llvm-core/clang
+# media-libs/mesa
+# dev-lang/rust-bin

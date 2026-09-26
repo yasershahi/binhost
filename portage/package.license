@@ -1,0 +1,4 @@
+sys-kernel/linux-firmware @BINARY-REDISTRIBUTABLE
+app-office/obsidian Obsidian-EULA
+app-arch/unrar unRAR
+www-client/google-chrome google-chrome

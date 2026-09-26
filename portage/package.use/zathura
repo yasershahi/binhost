@@ -1,0 +1,5 @@
+app-text/zathura-meta pdf epub postscript
+net-libs/gnutls pkcs11 tools
+net-misc/spice-gtk usbredir
+x11-libs/gtk+ wayland
+media-libs/mesa wayland

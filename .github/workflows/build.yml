@@ -1,0 +1,51 @@
+name: build-binpkgs
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 3 * * 0"  # weekly, Sunday 03:00 UTC
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: gentoo/stage3:latest
+      options: --privileged
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout repo (package list + portage configs)
+        uses: actions/checkout@v4
+
+      - name: Select profile matching the laptop
+        run: eselect profile set default/linux/amd64/23.0/desktop
+
+      - name: Install laptop portage configs
+        run: |
+          cp portage/make.conf /etc/portage/make.conf
+          cp -r portage/package.use/. /etc/portage/package.use/
+          cp -r portage/package.accept_keywords/. /etc/portage/package.accept_keywords/
+          cp portage/package.license /etc/portage/package.license
+          emerge --info | grep -E "USE=|VIDEO_CARDS=|LLVM_TARGETS=" | head -n 3
+
+      - name: Sync portage tree
+        run: emerge --sync -q
+
+      - name: Build binary packages from source (never fetch)
+        run: |
+          emerge --oneshot --buildpkgonly --usepkg=n --jobs=2 \
+            $(grep -v -E "^\s*#|^\s*$" packages.txt | tr '\n' ' ')
+
+      - name: Generate Packages index
+        run: |
+          emaint binhost "${PKGDIR:-/var/cache/binpkgs}"
+          ls "${PKGDIR:-/var/cache/binpkgs}" | head
+
+      - name: Publish to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: /var/cache/binpkgs
+          publish_branch: gh-pages
+          force_orphan: true
