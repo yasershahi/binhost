@@ -45,9 +45,19 @@ jobs:
           cp portage/package.license /etc/portage/package.license
           emerge --info | grep -E "USE=|VIDEO_CARDS=|LLVM_TARGETS=" | head -n 3
 
+      - name: Runner resources
+        run: |
+          df -h /var/tmp /var/cache 2>/dev/null | head -n 5
+          free -g | head -n 2
+
+      - name: Fetch all sources first (loud, isolated errors)
+        run: |
+          emerge --oneshot --fetchonly --usepkg=n \
+            $(grep -v -E "^\s*#|^\s*$" packages.txt | tr '\n' ' ')
+
       - name: Build binary packages from source (never fetch)
         run: |
-          emerge --oneshot --buildpkg --usepkg=n --jobs=2 \
+          emerge --oneshot --buildpkg --usepkg=n --jobs=2 --keep-going --verbose \
             $(grep -v -E "^\s*#|^\s*$" packages.txt | tr '\n' ' ')
 
       - name: Generate Packages index
