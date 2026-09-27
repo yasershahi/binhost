@@ -14,6 +14,7 @@ SRC_URI="https://github.com/jliljebl/flowblade/archive/refs/tags/v${PV}.tar.gz -
 LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="~amd64"
+S="${WORKDIR}/${P}/flowblade-trunk"
 
 RDEPEND="${PYTHON_DEPS}
 	x11-libs/gtk+:3[introspection]
