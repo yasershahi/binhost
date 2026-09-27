@@ -50,6 +50,11 @@ jobs:
           df -h /var/tmp /var/cache 2>/dev/null | head -n 5
           free -g | head -n 2
 
+      - name: Smoke test (proves emerge itself works here)
+        run: |
+          emerge --oneshot --fetchonly --usepkg=n app-misc/fastfetch
+          echo "SMOKE-OK"
+
       - name: Fetch all sources first (loud, isolated errors)
         run: |
           emerge --oneshot --fetchonly --usepkg=n \
