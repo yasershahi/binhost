@@ -42,7 +42,7 @@ src_install() {
 	mkdir -p "${ED}/opt/brave-origin" || die
 	cp -a "${S}/"* "${ED}/opt/brave-origin/" || die
 	fperms 4755 /opt/brave-origin/chrome-sandbox
-	dosym ../brave-origin/brave-origin /usr/bin/brave-origin
+	dosym /opt/brave-origin/brave-origin /usr/bin/brave-origin
 	newicon "${S}"/product_logo_128.png brave-origin.png
 	make_desktop_entry "brave-origin %U" "Brave Origin" brave-origin "Network;WebBrowser"
 }
