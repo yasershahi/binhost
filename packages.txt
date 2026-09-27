@@ -10,6 +10,7 @@ gui-apps/gearlever
 media-video/flowblade
 media-video/footage
 www-client/brave-origin-bin
+x11-misc/clockenstein
 # --- monsters (manual dispatch only: hours of CI time each) ---
 # sys-devel/gcc
 # llvm-core/llvm
