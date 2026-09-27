@@ -6,7 +6,6 @@ net-ftp/filezilla
 media-video/handbrake
 app-emulation/qemu
 app-emulation/virt-manager
-gui-apps/gearlever
 media-video/flowblade
 media-video/footage
 www-client/brave-origin-bin
