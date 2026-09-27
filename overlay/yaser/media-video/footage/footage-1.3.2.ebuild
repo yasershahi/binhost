@@ -16,6 +16,7 @@ KEYWORDS="~amd64"
 
 RDEPEND="
 	gui-libs/gtk:4[introspection]
+	gui-libs/libadwaita:1[introspection]
 	media-video/ffmpeg"
 DEPEND="${RDEPEND}"
 BDEPEND="
