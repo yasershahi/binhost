@@ -1,10 +1,15 @@
 # Packages to prebuild on CI. One atom per line, # comments allowed.
 app-misc/fastfetch
 sys-process/htop
-# --- main courses (enable after first green run) ---
-# media-libs/mesa
-# net-ftp/filezilla
-# media-video/handbrake
+media-libs/mesa
+net-ftp/filezilla
+media-video/handbrake
+app-emulation/qemu
+app-emulation/virt-manager
+gui-apps/gearlever
+media-video/flowblade
+media-video/footage
+www-client/brave-origin-bin
 # --- monsters (manual dispatch only: hours of CI time each) ---
 # sys-devel/gcc
 # llvm-core/llvm

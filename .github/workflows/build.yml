@@ -26,6 +26,14 @@ jobs:
       - name: Sync portage tree (fresh stage3 ships without one)
         run: emerge --sync -q
 
+      - name: Add overlays (gurov for gearlever, local yaser)
+        run: |
+          git clone --depth 1 https://github.com/Gur0v/gurov-overlay /var/db/repos/gurov-overlay
+          cp -r overlay/yaser /var/db/repos/yaser
+          printf '[yaser]\nlocation = /var/db/repos/yaser\n' > /etc/portage/repos.conf/yaser.conf
+          printf '[gurov-overlay]\nlocation = /var/db/repos/gurov-overlay\n' > /etc/portage/repos.conf/gurov.conf
+          emaint sync -r gurov-overlay -q || true
+
       - name: Select profile matching the laptop
         run: eselect profile set default/linux/amd64/23.0/desktop
 
