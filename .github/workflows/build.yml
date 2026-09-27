@@ -24,7 +24,9 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Sync portage tree (fresh stage3 ships without one)
-        run: emerge --sync -q
+        # webrsync snapshots are atomic (no mid-sync Manifest skew) and fast;
+        # plain rsync is the fallback.
+        run: emerge-webrsync -q || emerge --sync -q
 
       - name: Add overlays (local yaser)
         run: |
