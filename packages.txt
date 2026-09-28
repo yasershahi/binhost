@@ -9,6 +9,6 @@ app-emulation/virt-manager
 www-client/brave-origin-bin
 x11-misc/clockenstein
 # --- monsters (manual dispatch only: hours of CI time each) ---
-# sys-devel/gcc
+sys-devel/gcc
 # llvm-core/llvm
 # llvm-core/clang
