@@ -6,8 +6,6 @@ net-ftp/filezilla
 media-video/handbrake
 app-emulation/qemu
 app-emulation/virt-manager
-media-video/flowblade
-media-video/footage
 www-client/brave-origin-bin
 x11-misc/clockenstein
 # --- monsters (manual dispatch only: hours of CI time each) ---
