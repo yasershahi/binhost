@@ -68,6 +68,7 @@ jobs:
       - name: Generate Packages index
         run: |
           emaint binhost
+          cp "${GITHUB_WORKSPACE}/publish/index.html" /var/cache/binpkgs/
           ls /var/cache/binpkgs | head
 
       - name: Upload Pages artifact
