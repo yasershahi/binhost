@@ -2,3 +2,8 @@ sys-kernel/linux-firmware @BINARY-REDISTRIBUTABLE
 app-office/obsidian Obsidian-EULA
 app-arch/unrar unRAR
 www-client/google-chrome google-chrome
+app-editors/vscode-bin vscode
+app-editors/antigravity Google-TOS
+dev-util/antigravity-cli Google-TOS
+app-editors/antigravity-ide Google-TOS
+www-client/vivaldi Vivaldi
