@@ -32,6 +32,9 @@ jobs:
         run: |
           emerge -q --oneshot dev-vcs/git
           git clone --depth 1 https://github.com/Gur0v/gurov-overlay /var/db/repos/gurov-overlay
+          # gurov declares masters=guru but needs nothing from it; point at gentoo
+          # to avoid cloning another huge overlay (fails loudly if it ever does need guru)
+          sed -i 's/^masters.*/masters = gentoo/' /var/db/repos/gurov-overlay/metadata/layout.conf
           cp -r overlay/yaser /var/db/repos/yaser
           mkdir -p /etc/portage/repos.conf
           printf '[yaser]\nlocation = /var/db/repos/yaser\n' > /etc/portage/repos.conf/yaser.conf
