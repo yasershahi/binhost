@@ -1,9 +1,14 @@
 name: build-binpkgs
 
+# Personal offload cooker: builds binary packages for the laptop so it
+# never compiles them. NOT a public binhost (unsigned, personal USE flags).
+# Scope is intentionally tiny (see packages.txt) — one small job that
+# finishes in minutes instead of the old 6h monster run.
+
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 3 1,15 * *"  # twice a month (matches laptop update cadence)
+    - cron: "0 3 1 * *"  # monthly (matches laptop update cadence)
 
 permissions:
   contents: read
@@ -13,6 +18,7 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 90  # fail fast instead of burning 6h silently
     container:
       image: gentoo/stage3:latest
       options: --privileged
@@ -20,7 +26,7 @@ jobs:
       run:
         shell: bash
     steps:
-      - name: Checkout repo (package list + portage configs)
+      - name: Checkout repo (overlay + package list + portage configs)
         uses: actions/checkout@v4
 
       - name: Sync portage tree (fresh stage3 ships without one)
@@ -28,17 +34,11 @@ jobs:
         # plain rsync is the fallback.
         run: emerge-webrsync -q || emerge --sync -q
 
-      - name: Add overlays (local yaser, gurov for gearlever)
+      - name: Add yaser overlay (lives at repo root)
         run: |
-          emerge -q --oneshot dev-vcs/git
-          git clone --depth 1 https://github.com/Gur0v/gurov-overlay /var/db/repos/gurov-overlay
-          # gurov declares masters=guru but needs nothing from it; point at gentoo
-          # to avoid cloning another huge overlay (fails loudly if it ever does need guru)
-          sed -i 's/^masters.*/masters = gentoo/' /var/db/repos/gurov-overlay/metadata/layout.conf
-          cp -r overlay/yaser /var/db/repos/yaser
+          cp -r "${GITHUB_WORKSPACE}" /var/db/repos/yaser
           mkdir -p /etc/portage/repos.conf
           printf '[yaser]\nlocation = /var/db/repos/yaser\n' > /etc/portage/repos.conf/yaser.conf
-          printf '[gurov-overlay]\nlocation = /var/db/repos/gurov-overlay\n' > /etc/portage/repos.conf/gurov.conf
 
       - name: Select profile matching the laptop
         run: eselect profile set default/linux/amd64/23.0/desktop
@@ -49,26 +49,23 @@ jobs:
           cp -r portage/package.use/. /etc/portage/package.use/
           cp -r portage/package.accept_keywords/. /etc/portage/package.accept_keywords/
           cp portage/package.license /etc/portage/package.license
-          emerge --info | grep -E "USE=|VIDEO_CARDS=|LLVM_TARGETS=" | head -n 3
+          emerge --info | grep -E "USE=|PYTHON_SINGLE_TARGET" | head -n 3
 
       - name: Runner resources
         run: |
           df -h /var/tmp /var/cache 2>/dev/null | head -n 5
           free -g | head -n 2
 
-      - name: Smoke test (proves emerge itself works here)
+      - name: Fetch sources first (loud, isolated errors)
         run: |
-          emerge --oneshot --fetchonly --usepkg=n app-misc/fastfetch
-          echo "SMOKE-OK"
-
-      - name: Fetch all sources first (loud, isolated errors)
-        run: |
-          emerge --oneshot --fetchonly --usepkg=n \
+          emerge --oneshot --fetchonly \
             $(grep -v -E "^\s*#|^\s*$" packages.txt | tr '\n' ' ')
 
-      - name: Build binary packages from source (never fetch)
+      - name: Build binary packages (deps from official binhost, target from source)
+        # --getbinpkg (in make.conf) lets DEPS come prebuilt; --buildpkg
+        # snapshots the target into /var/cache/binpkgs for publishing.
         run: |
-          emerge --oneshot --buildpkg --usepkg=n --jobs=2 --keep-going --verbose \
+          emerge --oneshot --buildpkg --jobs=2 --keep-going --verbose \
             $(grep -v -E "^\s*#|^\s*$" packages.txt | tr '\n' ' ')
 
       - name: Generate Packages index

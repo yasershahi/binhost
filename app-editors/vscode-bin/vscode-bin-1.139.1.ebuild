@@ -10,7 +10,7 @@ HOMEPAGE="https://code.visualstudio.com/"
 SRC_URI="https://update.code.visualstudio.com/${PV}/linux-x64/stable -> vscode-${PV}.tar.gz"
 S="${WORKDIR}/VSCode-linux-x64"
 
-LICENSE="vscode"
+LICENSE="Microsoft-vscode"
 SLOT="0"
 KEYWORDS="~amd64"
 RESTRICT="bindist mirror strip"

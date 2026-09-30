@@ -1,15 +1,4 @@
-# Packages to prebuild on CI. One atom per line, # comments allowed.
-app-misc/fastfetch
-sys-process/htop
-media-libs/mesa
-net-ftp/filezilla
-media-video/handbrake
-app-emulation/qemu
-app-emulation/virt-manager
-www-client/brave-origin-bin
-x11-misc/clockenstein
-sys-devel/gcc
-www-client/vivaldi
+# Packages to prebuild on CI for the laptop. One atom per line, # comments allowed.
+# Keep this list TINY: every entry must be worth more than its CI minutes.
+# (-bin ebuilds like vscode-bin/vivaldi-bin need no entry: no compiling anywhere.)
 gui-apps/gearlever
-# llvm-core/llvm
-# llvm-core/clang
