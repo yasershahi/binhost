@@ -1,15 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta charset="utf-8"><title>yaser's gentoo binhost</title></head>
+<head><meta charset="utf-8"><title>yaser-overlay</title></head>
 <body>
-<h1>yaser's gentoo binhost</h1>
-<p>Personal binary packages for an i5-2450M Gentoo laptop (23.0/desktop, custom USE).
-Built on GitHub Actions, published here. Not for general consumption.</p>
-<ul>
-<li><a href="Packages">Packages</a> (portage index — this is what matters)</li>
-<li><a href="https://github.com/yasershahi/binhost">build repo</a></li>
-</ul>
-<p>Laptop side: <code>PORTAGE_BINHOST="https://yasershahi.github.io/binhost/ ..."</code>
-with <code>EMERGE_DEFAULT_OPTS="--getbinpkg --binpkg-respect-use=n"</code>.</p>
+<h1>yaser-overlay</h1>
+<p><strong>Notice:</strong> personal Gentoo overlay. Two prebuilt-upstream
+packages, zero compiling anywhere, no CI cooker, no public binhost.
+Use at your own risk.</p>
+
+<h2>Packages</h2>
+<table border="1" cellpadding="6">
+<tr><th>atom</th><th>version</th><th>what</th><th>source</th><th>license</th></tr>
+<tr><td><code>app-editors/vscode-bin</code></td><td>1.139.1</td>
+<td>Visual Studio Code (upstream tarball, unpacked to /opt/vscode)</td>
+<td><a href="https://code.visualstudio.com/">code.visualstudio.com</a></td><td>Microsoft-vscode</td></tr>
+<tr><td><code>www-client/vivaldi-bin</code></td><td>8.2.4133.68</td>
+<td>Vivaldi browser (upstream .deb, unpacked; conflicts with <code>www-client/vivaldi</code>)</td>
+<td><a href="https://vivaldi.com/">vivaldi.com</a></td><td>Vivaldi</td></tr>
+</table>
+<p>Laptop setup: add the overlay
+(<code>eselect repository add yaser git https://github.com/yasershahi/yaser-overlay.git</code>),
+accept <code>*/*::yaser ~amd64</code>, accept the two licenses.</p>
+
+<h2>Guide: AppImages the manual way (no manager)</h2>
+<p>No Gearlever, no AppImageLauncher, no daemon. Needs FUSE
+(<code>sys-fs/fuse</code> + <code>fuse:2</code>).</p>
+<ol>
+<li><code>mkdir -p ~/Applications ~/.local/share/applications ~/.local/share/icons</code></li>
+<li><code>chmod +x App-1.2.3-x86_64.AppImage &amp;&amp; mv App-1.2.3-x86_64.AppImage ~/Applications/</code> — keep the version in the filename as instant rollback.</li>
+<li>Create <code>~/.local/share/applications/myapp.desktop</code>:
+<pre>[Desktop Entry]
+Type=Application
+Name=MyApp
+Exec=/home/yaser/Applications/MyApp-1.2.3-x86_64.AppImage %U
+Icon=myapp
+Categories=Utility;
+Terminal=false</pre></li>
+<li><code>update-desktop-database ~/.local/share/applications</code> — shows in rofi/menus.</li>
+<li>Icon: <code>./MyApp.AppImage --appimage-extract .DirIcon</code>, copy best file to <code>~/.local/share/icons/myapp.png</code>.</li>
+<li>Update = repeat step 2 + fix <code>Exec=</code>. Remove = delete both files.</li>
+</ol>
+<p>Full version with troubleshooting table: <code>Documents/Notes/appimage-manual.md</code> on the laptop.</p>
+
+<p><a href="https://github.com/yasershahi/yaser-overlay">repo</a></p>
 </body>
 </html>

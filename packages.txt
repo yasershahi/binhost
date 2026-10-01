@@ -1,4 +1,0 @@
-# Packages to prebuild on CI for the laptop. One atom per line, # comments allowed.
-# (empty on purpose: gearlever removed 2026-10-01, -bin ebuilds need no entry
-# since they never compile anywhere. Workflow file deleted; restore it from
-# git history if cooking is ever wanted again.)
