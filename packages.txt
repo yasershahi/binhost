@@ -1,4 +1,4 @@
 # Packages to prebuild on CI for the laptop. One atom per line, # comments allowed.
-# Keep this list TINY: every entry must be worth more than its CI minutes.
-# (-bin ebuilds like vscode-bin/vivaldi-bin need no entry: no compiling anywhere.)
-gui-apps/gearlever
+# (empty on purpose: gearlever removed 2026-10-01, -bin ebuilds need no entry
+# since they never compile anywhere. Workflow file deleted; restore it from
+# git history if cooking is ever wanted again.)
