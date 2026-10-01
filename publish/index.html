@@ -21,26 +21,6 @@ Use at your own risk.</p>
 (<code>eselect repository add yaser git https://github.com/yasershahi/yaser-overlay.git</code>),
 accept <code>*/*::yaser ~amd64</code>, accept the two licenses.</p>
 
-<h2>Guide: AppImages the manual way (no manager)</h2>
-<p>No Gearlever, no AppImageLauncher, no daemon. Needs FUSE
-(<code>sys-fs/fuse</code> + <code>fuse:2</code>).</p>
-<ol>
-<li><code>mkdir -p ~/Applications ~/.local/share/applications ~/.local/share/icons</code></li>
-<li><code>chmod +x App-1.2.3-x86_64.AppImage &amp;&amp; mv App-1.2.3-x86_64.AppImage ~/Applications/</code> — keep the version in the filename as instant rollback.</li>
-<li>Create <code>~/.local/share/applications/myapp.desktop</code>:
-<pre>[Desktop Entry]
-Type=Application
-Name=MyApp
-Exec=/home/yaser/Applications/MyApp-1.2.3-x86_64.AppImage %U
-Icon=myapp
-Categories=Utility;
-Terminal=false</pre></li>
-<li><code>update-desktop-database ~/.local/share/applications</code> — shows in rofi/menus.</li>
-<li>Icon: <code>./MyApp.AppImage --appimage-extract .DirIcon</code>, copy best file to <code>~/.local/share/icons/myapp.png</code>.</li>
-<li>Update = repeat step 2 + fix <code>Exec=</code>. Remove = delete both files.</li>
-</ol>
-<p>Full version with troubleshooting table: <code>Documents/Notes/appimage-manual.md</code> on the laptop.</p>
-
 <p><a href="https://github.com/yasershahi/yaser-overlay">repo</a></p>
 </body>
 </html>
